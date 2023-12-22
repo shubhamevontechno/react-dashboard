@@ -5,7 +5,6 @@ import AuthContext from "./../Context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import AuthUser from "../api/axios";
 
-const LOGIN_URL = "/auth/login";
 
 const Login = () => {
   const { http, setToken } = AuthUser();

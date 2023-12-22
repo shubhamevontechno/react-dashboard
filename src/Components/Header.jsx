@@ -2,6 +2,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import AuthUser from "../api/axios";
 import Register from "./Register";
+import ViewUser from "./Users/ViewUser";
 
 function Header() {
   const { token, logout } = AuthUser();
@@ -35,6 +36,7 @@ function Header() {
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/user-info" element={<ViewUser />} />
         </Routes>
       </div>
     </>

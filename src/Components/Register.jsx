@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import AuthUser from "../api/axios";
+import { Link } from "react-router-dom";
 
 const Register = () => {
-  const {http} = AuthUser();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  
+  const { http } = AuthUser();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-   await http.post('/register',{name:name, email:email, password:password}).then((res) => {
-     console.log(res);
-    });
-  }
+    try {
+      const res = await http
+      .post("/register", { name:name, email:email, password:password });
+      console.log(res);
+    } catch (error) {
+      console.error("catcg error", error);
+    }
+  };
+
   return (
     <>
       <div className="container mt-3">
@@ -23,9 +29,11 @@ const Register = () => {
                 <h4 className="text-justify text-md-left text-nowrap float-start">
                   User Registration
                 </h4>
-                <button className="btn btn-secondary btn-sm float-end">
-                  View Users
-                </button>
+                <Link to="/user-info">
+                  <button className="btn btn-secondary btn-sm float-end">
+                    View Users
+                  </button>
+                </Link>
               </div>
               <br />
               <form className="mt-3" onSubmit={handleSubmit}>
