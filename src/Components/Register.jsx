@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import AuthUser from "../api/axios";
 import { Link } from "react-router-dom";
+import { showSuccessMessage } from "../utils/swalUtils";
+import SubmitButton from "../utils/SubmitButton";
 
 const Register = () => {
   const { http } = AuthUser();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await http
       .post("/register", { name:name, email:email, password:password });
-      console.log(res);
+        setTimeout(() => {
+          setLoading(false);
+          showSuccessMessage(res.data.message);
+          setName('');
+          setEmail('');
+          setPassword('');
+        }, 2000);      
     } catch (error) {
       console.error("catcg error", error);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
   };
 
@@ -73,9 +86,12 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <SubmitButton loading={loading} onClick={handleSubmit}>
                   Submit
-                </button>
+                </SubmitButton>
+                {/* <button type="submit" className="btn btn-primary">
+                  Submit
+                </button> */}
               </form>
             </div>
           </div>

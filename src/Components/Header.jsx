@@ -3,6 +3,7 @@ import Dashboard from "./Dashboard";
 import AuthUser from "../api/axios";
 import Register from "./Register";
 import ViewUser from "./Users/ViewUser";
+import MyExpenses from "./Expenses/MyExpenses";
 
 function Header() {
   const { token, logout } = AuthUser();
@@ -18,6 +19,11 @@ function Header() {
           <li className="nav-item">
             <Link className="nav-link" to="/dashboard">
               Dashboard
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/my-expenses">
+              My Expenses
             </Link>
           </li>
           <li className="nav-item">
@@ -37,6 +43,7 @@ function Header() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
           <Route path="/user-info" element={<ViewUser />} />
+          <Route path="/my-expenses" element={<MyExpenses />} />
         </Routes>
       </div>
     </>

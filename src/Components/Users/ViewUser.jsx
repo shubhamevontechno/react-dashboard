@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import AuthUser from "../../api/axios";
+// import { confirmDelete, showSuccessMessage } from './utils/swalUtils';
+import { confirmDelete, showSuccessMessage } from "../../utils/swalUtils";
+
 
 const ViewUser = () => {
   const [users, setUsers] = useState([]);
+  const [loadingStates, setLoadingStates] = useState({});
   const { http } = AuthUser();
 
   useEffect(() => {
@@ -16,11 +20,27 @@ const ViewUser = () => {
     });
   };
 
-  const deleteUser = (id) =>{
-    http.delete('/user_info/destroy/${id}').then((res)=>{
-        console.log(res);
+  const deleteUser = (id) => {
+    confirmDelete().then((result) => {
+      if (result.isConfirmed) {
+        // Update the loading state for the specific user
+        setLoadingStates((prevStates) => ({
+          ...prevStates,
+          [id]: true,
+        }));
+        // setLoading(true);
+        http.delete(`/user_info/${id}`).then((res) => {
+          showSuccessMessage(res.data.message);
+          setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+          // Reset the loading state for the specific user
+          setLoadingStates((prevStates) => ({
+            ...prevStates,
+            [id]: false,
+          }));
+        });
+      }
     });
-  }
+  };
 
   return (
     <div>
@@ -55,8 +75,12 @@ const ViewUser = () => {
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                       </svg>
                     </button>
-                    <button className="btn btn-sm btn-secondary" onClick={()=>deleteUser(user.id)}>
-                        Delete
+                    <button
+                      key={user.id}
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => deleteUser(user.id)}
+                    >
+                      {!loadingStates[user.id] ? "Delete" : "Loading..."}
                     </button>
                   </td>
                 </tr>
