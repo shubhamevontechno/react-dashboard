@@ -6,14 +6,19 @@ const MyExpenses = () => {
   const currentDate = new Date();
   const currentDateISOString = currentDate.toISOString().split("T")[0];
   const [moreInfo, setMoreInfo] = useState(false);
-  const [loading, setLoading]   = useState(false);
-  const [amount, setAmount]     = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate]     = useState('');
-  const [moreDetails, setMoreDetails] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState(new Date().toISOString());
+  const [moreDetails, setMoreDetails] = useState("");
 
   const moreInfoHandle = () => {
     setMoreInfo(!moreInfo);
+  };
+
+  // Function to handle date change
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
   };
 
   const handleChange = (e) => {
@@ -25,11 +30,12 @@ const MyExpenses = () => {
   //handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Amount:', amount);
-    console.log('Date:', date);
-    console.log('description:', description);
+    console.log("Amount:", amount);
+    console.log("Date:", date);
+    console.log("description:", description);
+    console.log("more details:", moreDetails);
     // Rest of your code...
-  }
+  };
   return (
     <>
       <div className="container py-3">
@@ -45,22 +51,15 @@ const MyExpenses = () => {
                     <label htmlFor="amount" className="form-label">
                       Amount
                     </label>
-                    {/* <input
-                      type="number"
-                      className="form-control"
-                      id="amount"
-                      value={''}
-                      required
-                    /> */}
                     <CurrencyInput
-                    id="input-example"
-                    prefix={"₹"}
-                    name="input-name"
-                    className="form-control"
-                    placeholder="Please enter an amount"
-                    decimalsLimit={2}
-                    value={amount}
-                    onChange={handleChange}
+                      id="input-example"
+                      prefix={"₹"}
+                      name="input-name"
+                      className="form-control"
+                      placeholder="Please enter an amount"
+                      decimalsLimit={2}
+                      value={amount}
+                      onChange={handleChange}
                     />
 
                     <div className="invalid-feedback">
@@ -91,7 +90,8 @@ const MyExpenses = () => {
                       type="date"
                       className="form-control"
                       id="date"
-                      defaultValue={currentDateISOString}
+                      value={date}
+                      onChange={handleDateChange}
                       required
                     />
                     <div className="invalid-feedback">
@@ -131,7 +131,9 @@ const MyExpenses = () => {
                   )}
                   <div className="mb-3">
                     <div className="d-grid gap-2 col-lg-6 mx-auto">
-                      <SubmitButton loading={loading} onClick={handleSubmit}>Submit</SubmitButton>
+                      <SubmitButton loading={loading} onClick={handleSubmit}>
+                        Submit
+                      </SubmitButton>
                     </div>
                   </div>
                 </form>

@@ -40,23 +40,6 @@ const Login = () => {
         .then((res) => {
           setToken(res.data.access_token, res.data.user);
         });
-
-      console.log("hello", response);
-      // console.log(JSON.stringify(response?.data));
-      // const accessToken = response.data?.token;
-      // setAuth({ username, password, accessToken });
-
-      // store token in localstorage--
-      // if (accessToken) {
-      //   localStorage.setItem('token', accessToken);
-      //   setauthenticated(true);
-      //   navigate("/dashboard");
-      //   return;
-      // }
-
-      // setUsername("");
-      // setPassword("");
-      // setSuccess(true);
     } catch (err) {
       console.log("error", err);
       if (!err?.response) {
@@ -75,6 +58,11 @@ const Login = () => {
     <>
       <div className="container mt-3">
         <h2>Login Form</h2>
+        {errorMsg ? (
+        <div class="alert alert-danger">
+        {errorMsg}
+        </div> 
+        ) : '' } 
         <p
           ref={errRef}
           className={errorMsg ? "errorMsg" : "offscreen"}

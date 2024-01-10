@@ -25,7 +25,7 @@ const Register = () => {
           setPassword('');
         }, 2000);      
     } catch (error) {
-      console.error("catcg error", error);
+      console.error("catch error", error);
       setTimeout(() => {
         setLoading(false);
       }, 2000);
@@ -60,7 +60,7 @@ const Register = () => {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                  />
+                    />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">

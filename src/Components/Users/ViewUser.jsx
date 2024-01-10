@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AuthUser from "../../api/axios";
-// import { confirmDelete, showSuccessMessage } from './utils/swalUtils';
 import { confirmDelete, showSuccessMessage } from "../../utils/swalUtils";
-
 
 const ViewUser = () => {
   const [users, setUsers] = useState([]);
