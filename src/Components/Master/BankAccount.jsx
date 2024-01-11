@@ -27,22 +27,21 @@ const BankAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log('file', e.target);
+    console.log("file", e.target);
     try {
       const formData = new FormData();
-      formData.append('user_id', 8);
-      formData.append('bank_name', bankName);
-      formData.append('account_name', accountName);
-      formData.append('account_number', accountNumber);
-      formData.append('logo', getLogo);
-  
+      formData.append("user_id", 8);
+      formData.append("bank_name", bankName);
+      formData.append("account_name", accountName);
+      formData.append("account_number", accountNumber);
+      formData.append("logo", getLogo);
+
       const res = await http.post("/bank-account", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          
+          'Content-Type': 'multipart/form-data'
         },
       });
-  
+
       if (res.data.status === 200) {
         setLoading(false);
         showSuccessMessage(res.data.message);
@@ -52,20 +51,21 @@ const BankAccount = () => {
         setLogo("");
         e.target.form.reset();
       }
-        
-      
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        console.log("Internal Server Error. Please try again later.",error.response);
-      } else if(error.response && error.response.status === 422){
+        console.log(
+          "Internal Server Error. Please try again later.",
+          error.response
+        );
+      } else if (error.response && error.response.status === 422) {
         setValidationError(error.response.data.errors);
       } else {
-        console.log('else',error);
+        console.log("else", error);
       }
       setLoading(false);
     }
   };
-  
+
   return (
     <>
       <div className="container py-3">
@@ -76,7 +76,7 @@ const BankAccount = () => {
                 <h4 className="mb-0">Bank Account</h4>
               </div>
               <div className="card-body">
-                <form className="needs-validation" noValidate>
+                <form className="needs-validation" method="post" encType="multipart/form-data" noValidate>
                   <div className="mb-3">
                     <label htmlFor="bankName" className="form-label">
                       Bank Name
@@ -91,9 +91,13 @@ const BankAccount = () => {
                     />
                     {/* Display validation error */}
                     {validationError && validationError.bank_name && (
-                      <div className="invalid-feedback" style={{display:'block'}}>{validationError.bank_name[0]}</div>
+                      <div
+                        className="invalid-feedback"
+                        style={{ display: "block" }}
+                      >
+                        {validationError.bank_name[0]}
+                      </div>
                     )}
-                    
                   </div>
                   <div className="mb-3">
                     <label htmlFor="bankName" className="form-label">
@@ -109,7 +113,12 @@ const BankAccount = () => {
                     />
                     {/* Display validation error */}
                     {validationError && validationError.account_name && (
-                      <div className="invalid-feedback" style={{display:'block'}}>{validationError.account_name[0]}</div>
+                      <div
+                        className="invalid-feedback"
+                        style={{ display: "block" }}
+                      >
+                        {validationError.account_name[0]}
+                      </div>
                     )}
                   </div>
 
@@ -125,10 +134,15 @@ const BankAccount = () => {
                       placeholder="Please enter the bank name"
                       onChange={(e) => setAccountNumber(e.target.value)}
                     />
-                    
+
                     {/* Display validation error */}
                     {validationError && validationError.account_number && (
-                      <div className="invalid-feedback" style={{display:'block'}}>{validationError.account_number[0]}</div>
+                      <div
+                        className="invalid-feedback"
+                        style={{ display: "block" }}
+                      >
+                        {validationError.account_number[0]}
+                      </div>
                     )}
                   </div>
 
@@ -144,13 +158,25 @@ const BankAccount = () => {
                       placeholder="Please enter the bank name"
                       onChange={handleChange}
                     />
-                     {/* Display validation error */}
-                     {validationError && validationError.logo && (
-                      <div className="invalid-feedback" style={{display:'block'}}>{validationError.logo[0]}</div>
+                    {/* Display validation error */}
+                    {validationError && validationError.logo && (
+                      <div
+                        className="invalid-feedback"
+                        style={{ display: "block" }}
+                      >
+                        {validationError.logo[0]}
+                      </div>
                     )}
                   </div>
                   <div className="mb-3">
-                    {logo && <img src={logo} alt="Bank Logo" width={"100px"} className="object-fit-contain border rounded" />}
+                    {logo && (
+                      <img
+                        src={logo}
+                        alt="Bank Logo"
+                        width={"100px"}
+                        className="object-fit-contain border rounded"
+                      />
+                    )}
                   </div>
 
                   <div className="mb-3">
