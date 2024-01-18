@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 
 export const confirmDelete = async () => {
   return Swal.fire({
-    title: "Are you sure want to delete this user?",
+    title: "Are you sure want to delete this record?",
     text: "You won't be able to revert this!",
     icon: "warning",
     showCancelButton: true,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SubmitButton from "../../utils/SubmitButton";
 import { showSuccessMessage } from "../../utils/swalUtils";
 import AuthUser from "../../api/axios";
+import { Link } from "react-router-dom";
 
 const BankAccount = () => {
   const [bankName, setBankName] = useState("");
@@ -38,7 +39,7 @@ const BankAccount = () => {
 
       const res = await http.post("/bank-account", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -73,10 +74,22 @@ const BankAccount = () => {
           <div className="mx-auto col-sm-6">
             <div className="card">
               <div className="card-header">
-                <h4 className="mb-0">Bank Account</h4>
+                <div className="d-flex justify-content-between align-items-center">
+                  <h4 className="mb-0">Bank Account</h4>
+                  <Link to="/bank-account-info">
+                    <button className="btn btn-secondary btn-sm float-end">
+                      View Accounts
+                    </button>
+                  </Link>
+                </div>
               </div>
               <div className="card-body">
-                <form className="needs-validation" method="post" encType="multipart/form-data" noValidate>
+                <form
+                  className="needs-validation"
+                  onSubmit={handleSubmit}
+                  encType="multipart/form-data"
+                  noValidate
+                >
                   <div className="mb-3">
                     <label htmlFor="bankName" className="form-label">
                       Bank Name
@@ -181,9 +194,7 @@ const BankAccount = () => {
 
                   <div className="mb-3">
                     <div className="d-grid gap-2 col-lg-6 mx-auto">
-                      <SubmitButton loading={loading} onClick={handleSubmit}>
-                        Submit
-                      </SubmitButton>
+                      <SubmitButton loading={loading}>Submit</SubmitButton>
                     </div>
                   </div>
                 </form>

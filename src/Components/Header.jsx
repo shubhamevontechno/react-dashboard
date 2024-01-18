@@ -5,6 +5,8 @@ import Register from "./Register";
 import ViewUser from "./Users/ViewUser";
 import MyExpenses from "./Expenses/MyExpenses";
 import BankAccount from "./Master/BankAccount";
+import BankAccountInfo from "./Master/BankAccountInfo";
+import Categories from "./Master/Category/Categories";
 
 function Header() {
   const { token, logout } = AuthUser();
@@ -47,7 +49,7 @@ function Header() {
               </a>
               <ul className="dropdown-menu">
                 <li>
-                  <Link className="dropdown-item" to="">
+                  <Link className="dropdown-item" to="/categories">
                     Category
                   </Link>
                 </li>
@@ -83,6 +85,8 @@ function Header() {
           <Route path="/user-info" element={<ViewUser />} />
           <Route path="/my-expenses" element={<MyExpenses />} />
           <Route path="/bank-account" element={<BankAccount/>}/>
+          <Route path="/bank-account-info" element={<BankAccountInfo/>}/>
+          <Route path="/categories" element={<Categories />}/>
         </Routes>
       </div>
     </>
