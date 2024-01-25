@@ -23,3 +23,15 @@ export const showSuccessMessage = (message) => {
     timer: 1500,
   });
 };
+
+export const showSessionExpirePopup = () => {
+  return Swal.fire({
+    title: 'Session Expire',
+    text: 'Logging out...',
+    icon: 'warning',
+    showCancelButton: false,
+    showConfirmButton: false,
+    timer: 2000, // Adjust the timer duration as needed
+    timerProgressBar: true,
+  });
+};

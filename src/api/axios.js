@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { showSessionExpirePopup } from "../utils/swalUtils";
 
 export default function AuthUser() {
   const navigate = useNavigate();
@@ -29,19 +30,21 @@ export default function AuthUser() {
 
     setToken(token);
     setUser(user);
-     navigate('/dashboard')
+    navigate("/dashboard");
   };
 
   const logout = () => {
-    sessionStorage.clear();
-    navigate('/');
-  }
+    showSessionExpirePopup().then(() => {
+      sessionStorage.clear();
+      navigate("/");
+    });
+  };
 
   const http = axios.create({
     baseURL: "http://127.0.0.1:8000/api",
     headers: {
       "Content-type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
   return {
@@ -50,6 +53,6 @@ export default function AuthUser() {
     user,
     getToken,
     http,
-    logout
+    logout,
   };
 }

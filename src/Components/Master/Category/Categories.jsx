@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";                                                                                                                                                                                                                                                                                                                                                                                                                                              
 import SubmitButton from "../../../utils/SubmitButton";
 import AuthUser from "../../../api/axios";
 import { showSuccessMessage, confirmDelete } from "../../../utils/swalUtils";
 import TableDataLoader from "../../../utils/TableDataLoader";
+import UseAuth from "../../../Hook/UseAuth";
 
 const Categories = () => {
   const [showCategoryInput, setShowCategoryInput] = useState(false);
@@ -13,6 +14,7 @@ const Categories = () => {
   const [validationError, setValidationError] = useState("");
   const [fetchCategories, setFetchCategories] = useState([]);
   const { http } = AuthUser();
+  const { logout } = UseAuth();
 
   // Handle Show hide category input box :: start
   const handleInputDisplay = () => {
@@ -37,7 +39,10 @@ const Categories = () => {
       if (error.response && error.response.status === 403) {
         setValidationError(error.response.data.errors);
         setButtonLoading(false);
-      } else if (error.response && error.response.status === 500) {
+      } else if (error.response && error.response.status === 401) {
+        // Unauthorized, perform logout
+        logout();
+      }else if (error.response && error.response.status === 500) {
         console.log(
           "Internal Server Error. Please try again later.",
           error.response
@@ -59,6 +64,13 @@ const Categories = () => {
       http.get("/category").then((res) => {
         console.log("Categories", res.data);
         setFetchCategories(res.data.categories);
+        setDataLoader(false);
+      },
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          // Unauthorized, perform logout
+          logout();
+        }
         setDataLoader(false);
       });
     }, 500);
@@ -121,60 +133,66 @@ const Categories = () => {
               </div>
 
               <div className="accordion" id="accordionPanelsStayOpenExample">
-              {dataLoader ? (
-                 <center><TableDataLoader colSpan={2}></TableDataLoader></center>
+                {dataLoader ? (
+                  <center>
+                    <TableDataLoader colSpan={2}></TableDataLoader>
+                  </center>
                 ) : (
-                fetchCategories.map((category) => (
-                  <div className="accordion-item" key={category.id}>
-                    <h2
-                      className="accordion-header"
-                      id={`panelsStayOpen-heading${category.id}`}
-                    >
-                      <button
-                        className="accordion-button d-flex align-items-center collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#panelsStayOpen-collapse${category.id}`}
-                        aria-expanded="false"
-                        aria-controls={`panelsStayOpen-collapse${category.id}`}
+                  fetchCategories.map((category) => (
+                    <div className="accordion-item" key={category.id}>
+                      <h2
+                        className="accordion-header"
+                        id={`panelsStayOpen-heading${category.id}`}
                       >
-                        <img
-                          src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
-                          alt="Avatar"
-                          className="avatar-img rounded-circle me-2"
-                          style={{ width: "30px", height: "30px" }}
-                        />
-                        {category.name}
-                      </button>
-                    </h2>
-                    <div
-                      id={`panelsStayOpen-collapse${category.id}`}
-                      className="accordion-collapse collapse pt-2"
-                      aria-labelledby={`panelsStayOpen-heading${category.id}`}
-                    >
-                      <Link className="g-2 px-4">
+                        <button
+                          className="accordion-button d-flex align-items-center collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#panelsStayOpen-collapse${category.id}`}
+                          aria-expanded="false"
+                          aria-controls={`panelsStayOpen-collapse${category.id}`}
+                        >
+                          <img
+                            src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
+                            alt="Avatar"
+                            className="avatar-img rounded-circle me-2"
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                          {category.name}
+                        </button>
+                      </h2>
+                      <div
+                        id={`panelsStayOpen-collapse${category.id}`}
+                        className="accordion-collapse collapse pt-2"
+                        aria-labelledby={`panelsStayOpen-heading${category.id}`}
+                      >
+                        <Link className="g-2 px-4">
                           <b>+</b> Add Subcategory
-                      </Link>
-                      {!category.subcategories.length > 0 && (
-                          <center><p className="text-danger">No subcategories found</p></center>
-                      )}
-                      <div className="accordion-body">
-                        {category.subcategories.map((subcategory) => (
-                          <div key={subcategory.id} className="px-4">
-                            <img
-                              src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
-                              alt="Avatar"
-                              className="avatar-img rounded-circle me-2"
-                              style={{ width: "30px", height: "30px" }}
-                            />
-                            {subcategory.name}
-                          </div>
-                        ))}
+                        </Link>
+                        {!category.subcategories.length > 0 && (
+                          <center>
+                            <p className="text-danger">
+                              No subcategories found
+                            </p>
+                          </center>
+                        )}
+                        <div className="accordion-body">
+                          {category.subcategories.map((subcategory) => (
+                            <div key={subcategory.id} className="px-4">
+                              <img
+                                src="https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp"
+                                alt="Avatar"
+                                className="avatar-img rounded-circle me-2"
+                                style={{ width: "30px", height: "30px" }}
+                              />
+                              {subcategory.name}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-            )}
+                  ))
+                )}
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { showSessionExpirePopup } from "../utils/swalUtils";
 
 const UseAuth = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -17,7 +18,18 @@ const UseAuth = () => {
     }
   }, []);
 
-  return { authenticated, loading };
+  const logout = () => {
+    // Display SweetAlert popup before logging out
+    showSessionExpirePopup().then(() => {
+      // Perform logout actions, e.g., clear token from localStorage
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
+      setAuthenticated(false);
+      window.location.href = "/";
+    });
+  };
+
+  return { authenticated, loading, logout };
 };
 
 export default UseAuth;
